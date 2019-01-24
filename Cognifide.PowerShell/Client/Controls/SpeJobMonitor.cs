@@ -124,13 +124,13 @@ namespace Cognifide.PowerShell.Client.Controls
         }
 
         public void Start(string name, string category, ThreadStart task, Language language = null, User user = null,
-            JobOptions options = null)
+            DefaultJobOptions options = null)
         {
             Assert.ArgumentNotNullOrEmpty(name, "name");
             Assert.ArgumentNotNullOrEmpty(category, "category");
             Assert.ArgumentNotNull(task, "task");
             var siteName = Sitecore.Context.Site?.Name ?? string.Empty;
-            JobHandle = JobManager.Start(new JobOptions($"{name} - {Sitecore.Context.User?.Name}", category, siteName, new TaskRunner(task), "Run")
+            JobHandle = JobManager.Start(new DefaultJobOptions($"{name} - {Sitecore.Context.User?.Name}", category, siteName, new TaskRunner(task), "Run")
             {
                 ContextUser = user ?? options?.ContextUser ?? Sitecore.Context.User,
                 AtomicExecution = false,

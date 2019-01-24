@@ -65,7 +65,7 @@ namespace Cognifide.PowerShell.Core.Host
         private ScriptingHostPrivateData privateData;
 
         internal string JobScript { get; set; }
-        internal JobOptions JobOptions { get; set; }
+        internal DefaultJobOptions JobOptions { get; set; }
         public List<object> JobResultsStore { get; set; }
         internal ScriptingHost Host => host;
 

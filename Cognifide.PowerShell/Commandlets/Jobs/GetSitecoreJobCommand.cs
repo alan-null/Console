@@ -4,7 +4,7 @@ using Sitecore.StringExtensions;
 namespace Cognifide.PowerShell.Commandlets.Jobs
 {
     [Cmdlet(VerbsCommon.Get, "SitecoreJob")]
-    [OutputType(typeof (Sitecore.Jobs.Job))]
+    [OutputType(typeof (Sitecore.Jobs.DefaultJob))]
     public class GetSitecoreJobCommand : BaseCommand
     {
         [Parameter]

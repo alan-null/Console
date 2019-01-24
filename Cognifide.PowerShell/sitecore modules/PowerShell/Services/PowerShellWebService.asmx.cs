@@ -106,7 +106,7 @@ namespace Cognifide.PowerShell.Console.Services
             try
             {
                 var handle = ID.NewID.ToString();
-                var jobOptions = new JobOptions(GetJobId(guid, handle), "PowerShell", "shell", this, nameof(RunJob),
+                var jobOptions = new DefaultJobOptions(GetJobId(guid, handle), "PowerShell", "shell", this, nameof(RunJob),
                     new object[] {session, command})
                 {
                     AfterLife = new TimeSpan(0, 0, 20),
