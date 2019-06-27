@@ -17,15 +17,15 @@ namespace Cognifide.PowerShell.Core.Extensions
             if (item.Fields[Sitecore.FieldIDs.ReadOnly] == null)
             {
                 var error = $"Item '{item.Name}' does not have a ReadOnly field.";
-                command.WriteError(new ErrorRecord(new PSInvalidOperationException(error), 
+                command.WriteError(new ErrorRecord(new PSInvalidOperationException(error),
                     ErrorIds.InvalidOperation.ToString(), ErrorCategory.InvalidData, item));
                 return false;
             }
 
-            if (!item.Fields[Sitecore.FieldIDs.ReadOnly].CanWrite)
+            if (!item.Fields[Sitecore.FieldIDs.ReadOnly].CanUserWrite(Sitecore.Context.User))
             {
                 var error = $"Cannot modify item '{item.Name}' because the ReadOnly field cannot be written.";
-                command.WriteError(new ErrorRecord(new SecurityException(error), 
+                command.WriteError(new ErrorRecord(new SecurityException(error),
                     ErrorIds.InsufficientSecurityRights.ToString(), ErrorCategory.PermissionDenied,
                     item));
                 return false;
@@ -39,7 +39,7 @@ namespace Cognifide.PowerShell.Core.Extensions
             if (item.Access.CanWrite()) return true;
 
             var error = $"Cannot modify item '{item.Name}' because the item cannot be written.";
-            command.WriteError(new ErrorRecord(new SecurityException(error), 
+            command.WriteError(new ErrorRecord(new SecurityException(error),
                 ErrorIds.InsufficientSecurityRights.ToString(), ErrorCategory.PermissionDenied, item));
             return false;
         }
@@ -49,7 +49,7 @@ namespace Cognifide.PowerShell.Core.Extensions
             if (item.Access.CanAdmin()) return true;
 
             var error = $"Item '{item.Name}' cannot be managed by the current user.";
-            command.WriteError(new ErrorRecord(new SecurityException(error), 
+            command.WriteError(new ErrorRecord(new SecurityException(error),
                 ErrorIds.InsufficientSecurityRights.ToString(), ErrorCategory.PermissionDenied, item));
             return false;
         }
@@ -60,7 +60,7 @@ namespace Cognifide.PowerShell.Core.Extensions
                 (!item.Locking.IsLocked() && item.Locking.CanLock())) return true;
 
             var error = $"Cannot modify item '{item.Name}' because it is locked by '{item.Locking.GetOwner()}'.";
-            command.WriteError(new ErrorRecord(new SecurityException(error), 
+            command.WriteError(new ErrorRecord(new SecurityException(error),
                 ErrorIds.InsufficientSecurityRights.ToString(), ErrorCategory.PermissionDenied, item));
             return false;
         }
@@ -111,7 +111,7 @@ namespace Cognifide.PowerShell.Core.Extensions
             return account;
         }
 
-        
+
         public static bool TryParseAccessRight(this BaseCommand command, string accessRightName, out AccessRight accessRight)
         {
             accessRight = null;

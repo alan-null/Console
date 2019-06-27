@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Management.Automation;
 using Cognifide.PowerShell.Core.Extensions;
+using Sitecore.Abstractions;
 using Sitecore.Configuration;
 using Sitecore.ContentSearch;
 using Sitecore.ContentSearch.Linq;
@@ -13,6 +14,7 @@ using Sitecore.ContentSearch.SearchTypes;
 using Sitecore.ContentSearch.Utilities;
 using Sitecore.Data;
 using Sitecore.Data.Items;
+using Sitecore.DependencyInjection;
 using Sitecore.Rules;
 
 namespace Cognifide.PowerShell.Commandlets.Data.Search
@@ -280,7 +282,8 @@ namespace Cognifide.PowerShell.Commandlets.Data.Search
             var database = ((SitecoreItemCrawler)crawler).Database;
             if (string.IsNullOrEmpty(database)) return predicate;
 
-            var ruleFactory = new Sitecore.ContentSearch.Rules.QueryableRuleFactory();
+            var baseTemplateManager = (BaseTemplateManager)ServiceLocator.ServiceProvider.GetService(typeof(BaseTemplateManager));
+            var ruleFactory = new Sitecore.ContentSearch.Rules.QueryableRuleFactory(baseTemplateManager);
             var rules = ruleFactory.ParseRules<Sitecore.ContentSearch.Rules.QueryableRuleContext<SearchResultItem>>(Factory.GetDatabase(database), queryFilter);
             foreach (var rule in rules.Rules)
             {

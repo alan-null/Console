@@ -17,7 +17,9 @@ using Cognifide.PowerShell.Core.Host;
 using Cognifide.PowerShell.Core.Settings;
 using Cognifide.PowerShell.Core.Settings.Authorization;
 using Cognifide.PowerShell.Core.VersionDecoupling;
+using Sitecore.Abstractions;
 using Sitecore.Data;
+using Sitecore.DependencyInjection;
 using Sitecore.Diagnostics;
 using Sitecore.Exceptions;
 using Sitecore.Security.Accounts;
@@ -45,7 +47,7 @@ namespace Cognifide.PowerShell.Console.Services
         private const string StatusWorking = "working";
         private const string StatusError = "error";
         private const string StatusElevationRequired = "unauthorized";
-        private static readonly string[] ImportantProperties = {"Name", "Title"};
+        private static readonly string[] ImportantProperties = { "Name", "Title" };
 
         private static bool IsLoggedInUserAuthorized =>
             Sitecore.Context.IsLoggedIn &&
@@ -69,9 +71,9 @@ namespace Cognifide.PowerShell.Console.Services
             {
                 if (Sitecore.Context.User.Name.Equals(userName, StringComparison.OrdinalIgnoreCase))
                     return true;
-                Sitecore.Context.Logout();
+                ((BaseAuthenticationManager)ServiceLocator.ServiceProvider.GetService(typeof(BaseAuthenticationManager))).Logout();
             }
-            
+
             if (!LicenseManager.HasContentManager && !LicenseManager.HasExpress)
                 throw new AccessDeniedException("A required license is missing");
             Assert.IsTrue(Membership.ValidateUser(userName, password), "Unknown username or password.");

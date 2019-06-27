@@ -69,7 +69,7 @@ namespace Cognifide.PowerShell.Commandlets.Serialization
             var fileName = target;
             if (string.IsNullOrEmpty(fileName))
             {
-                var itemReference = new ItemReference(item);
+                var itemReference = new ItemReference(item.Database.Name, item.Paths.Path);
                 fileName = PathUtils.GetFilePath(itemReference.ToString());
             }
             if (!ShouldProcess(item.GetProviderPath(), string.Format("Serializing item to '{0}'", fileName)))

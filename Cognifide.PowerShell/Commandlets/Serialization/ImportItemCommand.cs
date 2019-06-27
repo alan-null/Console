@@ -86,7 +86,7 @@ namespace Cognifide.PowerShell.Commandlets.Serialization
 
         public void Deserialize(Item item)
         {
-            var reference = new ItemReference(item);
+            var reference = new ItemReference(item.Database.Name, item.Paths.Path);
             if (Recurse.IsPresent)
             {
                 var path = PathUtils.GetDirectoryPath(reference.ToString());

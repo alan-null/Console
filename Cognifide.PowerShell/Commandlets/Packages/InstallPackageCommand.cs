@@ -7,6 +7,7 @@ using Sitecore.Install.Metadata;
 using Sitecore.Install.Utils;
 using Sitecore.Install.Zip;
 using Sitecore.IO;
+using static Sitecore.Configuration.Settings;
 
 namespace Cognifide.PowerShell.Commandlets.Packages
 {
@@ -55,13 +56,8 @@ namespace Cognifide.PowerShell.Commandlets.Packages
 
                     if (ShouldProcess(fileName, "Install package"))
                     {
-                        var indexSetting = Sitecore.Configuration.Settings.Indexing.Enabled;
-                        if (DisableIndexing.IsPresent)
-                        {
-                            Sitecore.Configuration.Settings.Indexing.Enabled = false;
-                        }
 
-                        try
+                        using (new Sitecore.Data.BulkUpdateContext())
                         {
                             IProcessingContext context = new SimpleProcessingContext();
                             IItemInstallerEvents instance1 = new DefaultItemInstallerEvents(new BehaviourOptions(InstallMode, MergeMode));
@@ -77,13 +73,6 @@ namespace Cognifide.PowerShell.Commandlets.Packages
                             metadataSink.Initialize(previewContext);
                             source.Populate(metadataSink);
                             installer.ExecutePostStep(view.PostStep, previewContext);
-                        }
-                        finally
-                        {
-                            if (DisableIndexing.IsPresent)
-                            {
-                                Sitecore.Configuration.Settings.Indexing.Enabled = indexSetting;
-                            }
                         }
                     }
                 });

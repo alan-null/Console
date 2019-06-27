@@ -5,7 +5,10 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using Sitecore;
+using Sitecore.Abstractions;
+using Sitecore.DependencyInjection;
 using Sitecore.Security.Accounts;
+using Sitecore.Security.Authentication;
 using Sitecore.SecurityModel.License;
 
 namespace Cognifide.PowerShell.Commandlets.Security.Session
@@ -44,7 +47,7 @@ namespace Cognifide.PowerShell.Commandlets.Security.Session
                 if (Context.IsLoggedIn)
                 {
                     if (Context.User.Name.Equals(username, StringComparison.OrdinalIgnoreCase)) return;
-                    Context.Logout();
+                    ((BaseAuthenticationManager)ServiceLocator.ServiceProvider.GetService(typeof(BaseAuthenticationManager))).Logout();
                 }
                 if (!LicenseManager.HasContentManager && !LicenseManager.HasExpress)
                 {

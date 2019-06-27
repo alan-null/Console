@@ -15,8 +15,8 @@ namespace Cognifide.PowerShell.Core.Processors
             Assert.ArgumentNotNull(arguments, "arguments");
             try
             {
-                Assert.ArgumentNotNull(arguments.Context, "context");
-                var url = arguments.Context.Request.Url;
+                Assert.ArgumentNotNull(arguments.HttpContext, "context");
+                var url = arguments.HttpContext.Request.Url;
                 var localPath = url.LocalPath;
 
                 //Compatibility with 2.x services location now removed - uncomment the following to restore

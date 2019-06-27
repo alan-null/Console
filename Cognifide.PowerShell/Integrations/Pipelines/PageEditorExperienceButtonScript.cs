@@ -6,6 +6,7 @@ using Cognifide.PowerShell.Core.Settings;
 using Cognifide.PowerShell.Core.Settings.Authorization;
 using Cognifide.PowerShell.Core.Utility;
 using Sitecore;
+using Sitecore.Abstractions;
 using Sitecore.Data;
 using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
@@ -19,6 +20,8 @@ namespace Cognifide.PowerShell.Integrations.Pipelines
 {
     public class PageEditorExperienceButtonScript : GetChromeDataProcessor
     {
+        public PageEditorExperienceButtonScript(BaseClient client) : base(client) { }
+
         public string IntegrationPoint => IntegrationPoints.PageEditorExperienceButtonFeature;
 
         public override void Process(GetChromeDataArgs args)
